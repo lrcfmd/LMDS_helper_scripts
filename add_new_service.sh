@@ -16,7 +16,7 @@ done
 
 if [ -d "$target/$port" ] 
 then
-    echo "Target directory "$target/$port" exists. Try a different port or remove the directory" 
+    echo "Target directory "$(pwd)/$target/$port" exists. Try a different port or remove the directory" 
     exit 1 
 fi
 
