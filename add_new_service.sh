@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Specify options to parse
-options=":p:s:t"
+options=":p:s:t:"
 
 # Parse options using getopts
 while getopts $options opt; do
@@ -14,15 +14,14 @@ while getopts $options opt; do
   esac
 done
 
-if [ -d "$target/$port" ] 
+if [ -d "$(pwd)$target/$port" ]
 then
-    echo "Target directory "$(pwd)/$target/$port" exists. Try a different port or remove the directory" 
-    exit 1 
+    echo "Target directory "$(pwd)/$target/$port" exists. Try a different port or remove the directory"
+    exit 1
 fi
 
-cp -r $source "$target/$port"
+cp -r $source "$(pwd)/$target/$port"
 
 systemctl enable gunicorn@$port
 systemctl start gunicorn@$port
 echo "Service has been started, stop it with \"systemctl stop gunicorn@$port\""
-
