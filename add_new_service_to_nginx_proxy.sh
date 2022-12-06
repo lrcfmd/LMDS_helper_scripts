@@ -9,7 +9,7 @@ if grep -Evq "$ip_regex" <<< "$ip"; then
     exit 1
 fi
 
-read - p "What port was the webapp running on?" port
+read -p "What port was the webapp running on?" port
 
 if !  [[ "$port" -gt 0 && "$port" -lt 65536 ]]; then
     echo "Invalid port number"
