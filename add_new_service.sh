@@ -14,9 +14,9 @@ while getopts $options opt; do
   esac
 done
 
-if [ ! -d "$target/$port" ] 
+if [ -d "$target/$port" ] 
 then
-    echo "Target directory exists. Try a different port or remove the directory" 
+    echo "Target directory "$target/$port" exists. Try a different port or remove the directory" 
     exit 1 
 fi
 
