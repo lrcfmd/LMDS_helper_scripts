@@ -19,7 +19,7 @@ fi
 read -p "Enter address after the slash for example if I wanted to launch lmds.liv.ac.uk/MOF_ML I would enter \"MOF_ML\"" directory
 
 answer=""
-while [[ "$answer" != y && "$answer" != "n"]]; do
+while [[ "$answer" != "y" && "$answer" != "n" ]]; do
     read -p "Is your nginx config in the default directory (/etc/nginx/sites-available/default)  (y/n)?" answer
     
   if [[ "$answer" == "y" ]]; then
@@ -28,8 +28,8 @@ while [[ "$answer" != y && "$answer" != "n"]]; do
     # Do something if the user answered "n"
     read -p "Please enter the address of your nginx config" nginx_config
   else
-
     echo "Please answer 'y' for yes or 'n' for no."
+  fi
 done
 
 text="
@@ -43,7 +43,9 @@ current_date=$(date +"%d.%m.%Y")
 backup_location="$nginx_config.bak.$current_date"
 echo "creating backup of current config at $backup_location"
 sudo cp $nginx_config $backup_location
+echo "adding following text to nginx config:"
+echo "$text"
 # Use sed to insert the text after the specified pattern
-sudo sed -i "/location \/static {(?:[^{]*|{[^{]*})*}/i $text" nginx_config
+sudo sed -i "/location \/static {(?:[^{]*|{[^{]*})*}/i $text" $nginx_config
 
 systemctl restart nginx
