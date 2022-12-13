@@ -21,7 +21,7 @@ read -p "Enter address after the slash for example if I wanted to launch lmds.li
 answer=""
 while [[ "$answer" != "y" && "$answer" != "n" ]]; do
     read -p "Is your nginx config in the default directory (/etc/nginx/sites-available/default)  (y/n)?" answer
-    
+
   if [[ "$answer" == "y" ]]; then
     nginx_config="/etc/nginx/sites-available/default"
   elif [[ "$answer" == "n" ]]; then
@@ -45,7 +45,9 @@ echo "creating backup of current config at $backup_location"
 sudo cp $nginx_config $backup_location
 echo "adding following text to nginx config:"
 echo "$text"
+echo "Sed command:"
+echo "sed \"/location \/static {(?:[^{]*|{[^{]*})*}/i $text\" $nginx_config"
 # Use sed to insert the text after the specified pattern
-sudo sed -i "/location \/static {(?:[^{]*|{[^{]*})*}/i $text" $nginx_config
+sudo sed -i "/location \/static/i $text" $nginx_config
 
 systemctl restart nginx
