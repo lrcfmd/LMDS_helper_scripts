@@ -32,22 +32,15 @@ while [[ "$answer" != "y" && "$answer" != "n" ]]; do
   fi
 done
 
-text="
-
-    location $directory {
-        proxy_pass http://$ip:$port/;
-    }
-
-"
+text="    location /$directory {\n        proxy_pass http://$ip:$port/;\n    }\n"
 current_date=$(date +"%d.%m.%Y")
 backup_location="$nginx_config.bak.$current_date"
 echo "creating backup of current config at $backup_location"
 sudo cp $nginx_config $backup_location
 echo "adding following text to nginx config:"
-echo "$text"
-echo "Sed command:"
-echo "sed \"/location \/static {(?:[^{]*|{[^{]*})*}/i $text\" $nginx_config"
+echo $text
 # Use sed to insert the text after the specified pattern
-sudo sed -i "/location \/static/i $text" $nginx_config
+sed_match="\|location /static|i $text"
+sudo sed -i "$sed_match" $nginx_config
 
-systemctl restart nginx
+sudo service nginx restart

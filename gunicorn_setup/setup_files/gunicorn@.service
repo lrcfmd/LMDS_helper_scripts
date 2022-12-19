@@ -1,0 +1,19 @@
+[Unit]
+Description=gunicorn daemon
+After=network.target
+PartOf=gunicorn.target
+# Since systemd 235 reloading target can pass through
+ReloadPropagatedFrom=gunicorn.target
+
+
+[Service]
+User=#Your user here
+Group=www-data
+WorkingDirectory=/DIRECTORY/FOR/WEBAPPS/%i
+
+ExecStart=/usr/bin/gunicorn -b 0.0.0.0:%i --preload --workers 3 wsgi:app --timeout 1000
+ExecReload=/bin/kill -s HUP $MAINPID
+KillMode=mixed
+
+[Install]
+WantedBy=gunicorn.target
