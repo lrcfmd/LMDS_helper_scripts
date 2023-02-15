@@ -22,6 +22,9 @@ fi
 
 cp -r $source "$(pwd)/$target/$port"
 
+systemctl enable gunicorn.target 
+systemctl start gunicorn.target 
+
 systemctl enable gunicorn@$port
 systemctl start gunicorn@$port
 echo "Service has been started, stop it with \"systemctl stop gunicorn@$port\""
