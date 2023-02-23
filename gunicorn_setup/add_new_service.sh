@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# From https://stackoverflow.com/questions/42219633/running-two-instances-of-gunicorn
+
 # Specify options to parse
 options=":p:s:t:"
 
@@ -21,6 +23,9 @@ then
 fi
 
 cp -r $source "$(pwd)/$target/$port"
+
+systemctl enable gunicorn.target 
+systemctl start gunicorn.target 
 
 systemctl enable gunicorn@$port
 systemctl start gunicorn@$port
